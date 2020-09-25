@@ -1,0 +1,9 @@
+[submodule "juliaPackages/juliaPackages"]
+	path = juliaPackages/juliaPackages
+	url = https://github.com/JuliaNLSolvers/LsqFit.jl.git
+[submodule "juliaPackages/LsqFit.jl"]
+	path = juliaPackages/LsqFit.jl
+	url = https://github.com/JuliaNLSolvers/LsqFit.jl.git
+[submodule "juliaPackages/StatsBase.jl"]
+	path = juliaPackages/StatsBase.jl
+	url = https://github.com/JuliaStats/StatsBase.jl.git
