@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-24 Thu 22:16 -->
+<!-- 2020-09-25 Fri 18:10 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>moindres carrés dans la prévision de consommation d&rsquo;électricité</title>
@@ -216,6 +216,28 @@
     /*]]>*///-->
 // @license-end
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
@@ -224,102 +246,149 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8181d27">1. fortran code enlsip</a>
+<li><a href="#org754b816">1. <span class="todo TODO">TODO</span> lit review of least square models</a>
 <ul>
-<li><a href="#orgf0cc2cd">1.1. variables</a></li>
-</ul>
-</li>
-<li><a href="#org754b816">2. lit review of least square models</a>
+<li><a href="#orga27247f">1.1. <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></a></li>
+<li><a href="#org05719c4">1.2. <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</a>
 <ul>
-<li><a href="#orga27247f">2.1. <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></a></li>
-<li><a href="#org05719c4">2.2. <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</a>
-<ul>
-<li><a href="#orgd77e1a8">2.2.1. projection</a></li>
-<li><a href="#orgfa3ff4a">2.2.2. trust region</a></li>
+<li><a href="#orgd77e1a8">1.2.1. projection</a></li>
+<li><a href="#orgfa3ff4a">1.2.2. trust region</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a href="#orgbda1e5c">2. <span class="todo TODO">TODO</span> Linear Algebra prereqs</a></li>
 <li><a href="#org143d767">3. <span class="todo TODO">TODO</span> julia code</a>
 <ul>
-<li><a href="#org87cc9fb">3.1. lsqfit</a>
+<li><a href="#org2a51546">3.1. <span class="todo TODO">TODO</span> my julia code</a>
 <ul>
-<li><a href="#org2e90cdd">3.1.1. test</a></li>
+<li><a href="#org0320460">3.1.1. <span class="todo TODO">TODO</span> Gauss Newton</a></li>
 </ul>
 </li>
-<li><a href="#org863e896">3.2. statsbase</a></li>
+<li><a href="#org87cc9fb">3.2. lsqfit</a>
+<ul>
+<li><a href="#org2e90cdd">3.2.1. test</a>
+<ul>
+<li><a href="#orga119ebf">3.2.1.1. what is fit?</a></li>
 </ul>
 </li>
-<li><a href="#orga97bebf">4. data</a></li>
-<li><a href="#org651b8e9">5. publishing options</a></li>
+<li><a href="#orgf2ee9c3">3.2.2. levenbergMarquardt</a></li>
+<li><a href="#org97fc747">3.2.3. unkown types</a></li>
+</ul>
+</li>
+<li><a href="#org863e896">3.3. statsbase</a></li>
+</ul>
+</li>
+<li><a href="#orgea8be7a">4. python gauss newton</a></li>
+<li><a href="#org8181d27">5. fortran code enlsip</a>
+<ul>
+<li><a href="#orgf0cc2cd">5.1. variables</a></li>
+</ul>
+</li>
+<li><a href="#orga97bebf">6. data</a></li>
+<li><a href="#org651b8e9">7. publishing options</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org8181d27" class="outline-2">
-<h2 id="org8181d27"><span class="section-number-2">1</span> fortran code enlsip</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-orgf0cc2cd" class="outline-3">
-<h3 id="orgf0cc2cd"><span class="section-number-3">1.1</span> variables</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-FEX65 and HEX65 are user written subroutines
-<i>BACK</i> is name of common block for variables :
-BESTRK, BESTPGG, NRREST, LATTRY
-</p>
-
-<div class="org-src-container">
-<pre class="src src-fortran">    <span style="color: #fabd2f;">EXTERNAL</span> <span style="color: #8ec07c;">FEX65</span>,<span style="color: #8ec07c;">HEX65</span>
-    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">N</span>,<span style="color: #8ec07c;">M</span>,<span style="color: #8ec07c;">P</span>,<span style="color: #8ec07c;">L</span>
-    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">EXIT</span>
-    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">ACTIVE</span>(<span style="color: #d3869b; font-weight: bold;">10</span>),<span style="color: #8ec07c;">WINT</span>(<span style="color: #d3869b; font-weight: bold;">36</span>)
-    <span style="color: #fabd2f;">DOUBLE PRECISION</span>
-    *     H(<span style="color: #d3869b; font-weight: bold;">7</span>),X(<span style="color: #d3869b; font-weight: bold;">3</span>),F(<span style="color: #d3869b; font-weight: bold;">10</span>),WREAL(<span style="color: #d3869b; font-weight: bold;">136</span>)
-    <span style="color: #fabd2f;">DOUBLE PRECISION</span>
-    *    BESTRK,BESTPG
-    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">NRREST</span>,<span style="color: #8ec07c;">LATTRY</span>
-    <span style="color: #fabd2f;">COMMON</span> /<span style="color: #8ec07c;">BACK</span>/ BESTRK,BESTPG, NRREST,LATTRY
-    MDI=<span style="color: #d3869b; font-weight: bold;">36</span>
-    MDR=<span style="color: #d3869b; font-weight: bold;">136</span>
-    NOUT=<span style="color: #d3869b; font-weight: bold;">10</span>
-    N=<span style="color: #d3869b; font-weight: bold;">3</span>
-    M=<span style="color: #d3869b; font-weight: bold;">3</span>
-    P=<span style="color: #d3869b; font-weight: bold;">0</span>
-    L=<span style="color: #d3869b; font-weight: bold;">7</span>
-</pre>
-</div>
-</div>
-</div>
-</div>
-
 
 <div id="outline-container-org754b816" class="outline-2">
-<h2 id="org754b816"><span class="section-number-2">2</span> lit review of least square models</h2>
-<div class="outline-text-2" id="text-2">
+<h2 id="org754b816"><span class="section-number-2">1</span> <span class="todo TODO">TODO</span> lit review of least square models</h2>
+<div class="outline-text-2" id="text-1">
 </div>
 <div id="outline-container-orga27247f" class="outline-3">
-<h3 id="orga27247f"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></h3>
+<h3 id="orga27247f"><span class="section-number-3">1.1</span> <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></h3>
 </div>
 <div id="outline-container-org05719c4" class="outline-3">
-<h3 id="org05719c4"><span class="section-number-3">2.2</span> <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</h3>
-<div class="outline-text-3" id="text-2-2">
+<h3 id="org05719c4"><span class="section-number-3">1.2</span> <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</h3>
+<div class="outline-text-3" id="text-1-2">
 </div>
 <div id="outline-container-orgd77e1a8" class="outline-4">
-<h4 id="orgd77e1a8"><span class="section-number-4">2.2.1</span> projection</h4>
+<h4 id="orgd77e1a8"><span class="section-number-4">1.2.1</span> projection</h4>
 </div>
 <div id="outline-container-orgfa3ff4a" class="outline-4">
-<h4 id="orgfa3ff4a"><span class="section-number-4">2.2.2</span> trust region</h4>
+<h4 id="orgfa3ff4a"><span class="section-number-4">1.2.2</span> trust region</h4>
 </div>
 </div>
+</div>
+
+
+<div id="outline-container-orgbda1e5c" class="outline-2">
+<h2 id="orgbda1e5c"><span class="section-number-2">2</span> <span class="todo TODO">TODO</span> Linear Algebra prereqs</h2>
 </div>
 
 <div id="outline-container-org143d767" class="outline-2">
 <h2 id="org143d767"><span class="section-number-2">3</span> <span class="todo TODO">TODO</span> julia code</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org87cc9fb" class="outline-3">
-<h3 id="org87cc9fb"><span class="section-number-3">3.1</span> lsqfit</h3>
+<div id="outline-container-org2a51546" class="outline-3">
+<h3 id="org2a51546"><span class="section-number-3">3.1</span> <span class="todo TODO">TODO</span> my julia code</h3>
 <div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-org0320460" class="outline-4">
+<h4 id="org0320460"><span class="section-number-4">3.1.1</span> <span class="todo TODO">TODO</span> Gauss Newton</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+Based on python code in
+<a href="https://medium.com/@omyllymaki/gauss-newton-algorithm-implementation-from-scratch-55ebe56aac2e">Gauss-Newton algorithm implementation from scratch | by Ossi Myllymäki | Medium</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia"><span style="color: #fb4934;">using</span> ForwardDiff
+<span style="color: #fb4934;">using</span> LinearAlgebra
+
+<span style="color: #fb4934;">struct</span> <span style="color: #fabd2f;">algorithmic_parameters</span>
+    max_iter<span style="color: #fabd2f;">::Int</span>
+    tolerance<span style="color: #fabd2f;">::Float64</span>
+<span style="color: #fb4934;">end</span>
+
+
+<span style="color: #fb4934;">function</span> <span style="color: #8ec07c;">fit</span>(f, initguess, x, alg_param<span style="color: #fabd2f;">::algorithmic_parameters</span>)
+
+    <span style="color: #fb4934;">if</span> initguess <span style="color: #fabd2f;">==</span> <span style="color: #d3869b;">nothing</span>:
+        error(<span style="color: #b8bb26;">"No initial guess was provided"</span>)
+    <span style="color: #fb4934;">end</span>
+
+    coefficients = initguess
+        <span style="color: #fb4934;">for</span> k <span style="color: #fb4934;">in</span> <span style="color: #d3869b; font-weight: bold;">1</span>:alg_param.max_iter:
+            jacobian = x <span style="color: #fabd2f;">-&gt;</span> ForwardDiff.jacobian(f,x)
+            residual = f(x, coefficients) <span style="color: #fabd2f;">-</span>. y
+            coefficients = coefficients  .<span style="color: #fabd2f;">-</span> pinv(jacobian) <span style="color: #fabd2f;">*</span> residual <span style="color: #928374;">#</span><span style="color: #928374;">pinv is pseudoinverse</span>
+            rmse = sqrt(sum(residual<span style="color: #fabd2f;">.^</span><span style="color: #d3869b; font-weight: bold;">2</span>))
+
+            <span style="color: #fb4934;">if</span> rmse <span style="color: #fabd2f;">&lt;</span> alg_param.tolerance:
+                <span style="color: #fb4934;">return</span> coefficients
+            <span style="color: #fb4934;">end</span>
+
+        <span style="color: #fb4934;">end</span>
+<span style="color: #fb4934;">end</span>
+
+
+<span style="color: #928374;">#</span><span style="color: #928374;">tests</span>
+<span style="color: #fb4934;">function</span> <span style="color: #8ec07c;">f</span>(x, coefficients)
+    a = coefficients
+    <span style="color: #fb4934;">return</span> a[<span style="color: #d3869b; font-weight: bold;">1</span>]<span style="color: #fabd2f;">*</span>x<span style="color: #fabd2f;">.^</span><span style="color: #d3869b; font-weight: bold;">3</span> <span style="color: #fabd2f;">+</span> a[<span style="color: #d3869b; font-weight: bold;">2</span>]<span style="color: #fabd2f;">*</span>x<span style="color: #fabd2f;">.^</span><span style="color: #d3869b; font-weight: bold;">2</span> <span style="color: #fabd2f;">+</span> a[<span style="color: #d3869b; font-weight: bold;">3</span>]<span style="color: #fabd2f;">*</span>x <span style="color: #fabd2f;">+</span> a[<span style="color: #d3869b; font-weight: bold;">4</span>] <span style="color: #fabd2f;">+</span> a[<span style="color: #d3869b; font-weight: bold;">5</span>]<span style="color: #fabd2f;">*</span>sin(x)
+<span style="color: #fb4934;">end</span>
+
+
+<span style="color: #fb4934;">function</span> <span style="color: #8ec07c;">main</span>()
+    x = collect(range(<span style="color: #d3869b; font-weight: bold;">0</span>,stop=<span style="color: #d3869b; font-weight: bold;">100</span>,length=<span style="color: #d3869b; font-weight: bold;">100</span>))
+    coefficients = [<span style="color: #fabd2f;">-</span><span style="color: #d3869b; font-weight: bold;">0.001</span>, <span style="color: #d3869b; font-weight: bold;">0.1</span>, <span style="color: #d3869b; font-weight: bold;">0.1</span>, <span style="color: #d3869b; font-weight: bold;">2</span>, <span style="color: #d3869b; font-weight: bold;">15</span>]
+
+    y = f(x, coefficients)
+
+    algorithmic_param = algorithmic_parameters(<span style="color: #d3869b; font-weight: bold;">100</span>,<span style="color: #d3869b; font-weight: bold;">10</span><span style="color: #fabd2f;">^</span>(<span style="color: #fabd2f;">-</span><span style="color: #d3869b; font-weight: bold;">6</span>))
+    init_guess = <span style="color: #d3869b; font-weight: bold;">1000000</span> <span style="color: #fabd2f;">*</span> rand(Float64, len(coefficients))
+<span style="color: #fb4934;">end</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org87cc9fb" class="outline-3">
+<h3 id="org87cc9fb"><span class="section-number-3">3.2</span> lsqfit</h3>
+<div class="outline-text-3" id="text-3-2">
 <p>
 <a href="./juliaPackages/LsqFit.jl/src/curve_fit.jl">./juliaPackages/LsqFit.jl/src/curve_fit.jl</a>
 </p>
@@ -375,13 +444,30 @@ rss: residual sum of squares
 <ul class="org-ul">
 <li>apply f to get residuals</li>
 <li>OnceDifferentiable, similar</li>
-<li>lmfit(R, p0 wt; kwargs&#x2026;)</li>
+<li><p>
+lmfit(R, p0 wt; kwargs&#x2026;)
+</p>
+
+<p>
+We have a chain of functions that result in calling:
+</p>
+<div class="org-src-container">
+<pre class="src src-julia"><span style="color: #fb4934;">function</span> <span style="color: #8ec07c;">lmfit</span>(R<span style="color: #fabd2f;">::OnceDifferentiable</span>, p0<span style="color: #fabd2f;">::AbstractArray</span>, wt<span style="color: #fabd2f;">::AbstractArray</span>; autodiff = <span style="color: #d3869b;">:finite</span>, kwargs...)
+    results = levenberg_marquardt(R, p0; kwargs...)
+    p = minimizer(results)
+    <span style="color: #fb4934;">return</span> LsqFitResult(p, value!(R, p), jacobian!(R, p), converged(results), wt)
+<span style="color: #fb4934;">end</span>
+</pre>
+</div></li>
+
+<li>where is minimizer?</li>
+<li>analyze levenberg<sub>marquardt</sub> code</li>
 </ul>
 </div>
 
 <div id="outline-container-org2e90cdd" class="outline-4">
-<h4 id="org2e90cdd"><span class="section-number-4">3.1.1</span> test</h4>
-<div class="outline-text-4" id="text-3-1-1">
+<h4 id="org2e90cdd"><span class="section-number-4">3.2.1</span> test</h4>
+<div class="outline-text-4" id="text-3-2-1">
 <p>
 x: array of independent variables
 p: array of model parameters
@@ -396,6 +482,35 @@ p0 = [<span style="color: #d3869b; font-weight: bold;">0.5</span>, <span style="
 </pre>
 </div>
 
+<pre class="example" id="orgf760c8d">
+model (generic function with 1 method)
+0.0:0.5263157894736842:10.0
+20-element Array{Float64,1}:
+  0.9933271020066862
+  0.34009539314609366
+  0.12174084759819304
+  0.061289463674629535
+  0.021993391058954904
+  0.003014853710991665
+  0.010389981854704487
+  0.009441140905918605
+  0.0011803494220172185
+ -0.00405435598346164
+ -0.006928645358409931
+  0.013533686794186
+ -0.006040572290918142
+ -0.008036423298907294
+  0.004210055148295414
+ -0.007881953609191202
+ -0.009268967098313112
+  0.014162672576797122
+ -0.019190093954619635
+ -0.002924086242983699
+2-element Array{Float64,1}:
+ 0.5
+ 0.5
+</pre>
+
 <p>
 t is a composite type (LsqFitResult), with some interesting values:
 dof(fit): degrees of freedom
@@ -404,7 +519,7 @@ fit.resid: residuals = vector of residuals
 fit.jacobian: estimated Jacobian at solution
 </p>
 <div class="org-src-container">
-<pre class="src src-julia">fit = curve_fit(model, xdata, yadata, p0)
+<pre class="src src-julia">fit = curve_fit(model, xdata, ydata, p0)
 lb = [<span style="color: #d3869b; font-weight: bold;">1.1</span>, <span style="color: #fabd2f;">-</span><span style="color: #d3869b; font-weight: bold;">0.5</span>]
 ub = [<span style="color: #d3869b; font-weight: bold;">1.9</span>, <span style="color: #d3869b;">Inf</span>]
 p0_bounds = [<span style="color: #d3869b; font-weight: bold;">1.2</span>, <span style="color: #d3869b; font-weight: bold;">1.2</span>] <span style="color: #928374;"># </span><span style="color: #928374;">we have to start inside the bounds</span>
@@ -428,16 +543,324 @@ confidence_inter = confidence_interval(fit, <span style="color: #d3869b; font-we
     @. <span style="color: #8ec07c; font-weight: bold;">@views</span> J[:,<span style="color: #d3869b; font-weight: bold;">2</span>] = <span style="color: #fabd2f;">-</span>x<span style="color: #fabd2f;">*</span>p[<span style="color: #d3869b; font-weight: bold;">1</span>]<span style="color: #fabd2f;">*</span>J[:,<span style="color: #d3869b; font-weight: bold;">1</span>] <span style="color: #928374;">#</span><span style="color: #928374;">dmodel/dp[2], thanks to @views we don't allocate memory for the J[:,1] slice</span>
     J
 <span style="color: #fb4934;">end</span>
-fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orga119ebf" class="outline-5">
+<h5 id="orga119ebf"><span class="section-number-5">3.2.1.1</span> what is fit?</h5>
+<div class="outline-text-5" id="text-3-2-1-1">
+<div class="org-src-container">
+<pre class="src src-julia">fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
 </pre>
 </div>
 </div>
 </div>
 </div>
+<div id="outline-container-orgf2ee9c3" class="outline-4">
+<h4 id="orgf2ee9c3"><span class="section-number-4">3.2.2</span> levenbergMarquardt</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+<a href="./juliaPackages/LsqFit.jl/src/levenberg_marquardt.jl">./juliaPackages/LsqFit.jl/src/levenberg_marquardt.jl</a>
+</p>
+
+<p>
+`levenberg<sub>marquardt</sub>(f, g, initial<sub>x</sub>; &lt;keyword arguments&gt;`
+</p>
+
+<p>
+Returns the argmin over x of `sum(f(x).<sup>2</sup>)` using the Levenberg-Marquardt
+algorithm, and an estimate of the Jacobian of `f` at x.
+</p>
+
+<p>
+The function `f` should take an input vector of length n and return an output
+vector of length m. The function `g` is the Jacobian of f, and should return an m x
+n matrix. `initial<sub>x</sub>` is an initial guess for the solution.
+</p>
+
+<p>
+Implements box constraints as described in Kanzow, Yamashita, Fukushima (2004; J
+Comp &amp; Applied Math).
+</p>
+
+<ul class="org-ul">
+<li>tau is trust region</li>
+<li>Where is the Optimizer type?</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-julia" id="org223bc00"><span style="color: #fb4934;">struct</span> <span style="color: #fabd2f;">LevenbergMarquardt</span> <span style="color: #fabd2f;">&lt;:</span> <span style="color: #fabd2f;">Optimizer</span> <span style="color: #fb4934;">end</span>
+
+<span style="color: #fb4934;">function</span> <span style="color: #8ec07c;">levenberg_marquardt</span>(df<span style="color: #fabd2f;">::OnceDifferentiable</span>,
+                             initial_x<span style="color: #fabd2f;">::AbstractVector</span>{T};
+                             x_tol<span style="color: #fabd2f;">::Real</span> = <span style="color: #d3869b; font-weight: bold;">1e-8</span>,
+                             g_tol<span style="color: #fabd2f;">::Real</span> = <span style="color: #d3869b; font-weight: bold;">1e-12</span>,
+                             maxIter<span style="color: #fabd2f;">::Integer</span> = <span style="color: #d3869b; font-weight: bold;">1000</span>,
+                             lambda = T(<span style="color: #d3869b; font-weight: bold;">10</span>), tau=T(<span style="color: #d3869b;">Inf</span>),
+                             lambda_increase<span style="color: #fabd2f;">::Real</span> = <span style="color: #d3869b; font-weight: bold;">10.0</span>,
+                             lambda_decrease<span style="color: #fabd2f;">::Real</span> = <span style="color: #d3869b; font-weight: bold;">0.1</span>,
+                             min_step_quality<span style="color: #fabd2f;">::Real</span> = <span style="color: #d3869b; font-weight: bold;">1e-3</span>,
+                             good_step_quality<span style="color: #fabd2f;">::Real</span> = <span style="color: #d3869b; font-weight: bold;">0.75</span>,
+                             show_trace<span style="color: #fabd2f;">::Bool</span> = <span style="color: #d3869b;">false</span>,
+                             lower<span style="color: #fabd2f;">::Vector</span>{T} = Array{T}(<span style="color: #d3869b;">undef</span>, <span style="color: #d3869b; font-weight: bold;">0</span>),
+                             upper<span style="color: #fabd2f;">::Vector</span>{T} = Array{T}(<span style="color: #d3869b;">undef</span>, <span style="color: #d3869b; font-weight: bold;">0</span>),
+                             avv!<span style="color: #fabd2f;">::Union</span>{Function,Nothing,Avv} = <span style="color: #d3869b;">nothing</span>
+    ) <span style="color: #fb4934;">where</span> T
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia" id="orga7554fe">    <span style="color: #928374;"># </span><span style="color: #928374;">First evaluation</span>
+    value_jacobian!!(df, initial_x)
+
+    <span style="color: #fb4934;">if</span> isfinite(tau)
+        lambda = tau<span style="color: #fabd2f;">*</span>maximum(jacobian(df)'<span style="color: #fabd2f;">*</span>jacobian(df))
+    <span style="color: #fb4934;">end</span>
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-julia" id="org2180371">    ((isempty(lower) <span style="color: #fabd2f;">||</span> length(lower)<span style="color: #fabd2f;">==</span>length(initial_x)) <span style="color: #fabd2f;">&amp;&amp;</span> (isempty(upper) <span style="color: #fabd2f;">||</span> length(upper)<span style="color: #fabd2f;">==</span>length(initial_x))) <span style="color: #fabd2f;">||</span>
+            throw(ArgumentError(<span style="color: #b8bb26;">"Bounds must either be empty or of the same length as the number of parameters."</span>))
+    ((isempty(lower) <span style="color: #fabd2f;">||</span> all(initial_x .<span style="color: #fabd2f;">&gt;=</span> lower)) <span style="color: #fabd2f;">&amp;&amp;</span> (isempty(upper) <span style="color: #fabd2f;">||</span> all(initial_x .<span style="color: #fabd2f;">&lt;=</span> upper))) <span style="color: #fabd2f;">||</span>
+            throw(ArgumentError(<span style="color: #b8bb26;">"Initial guess must be within bounds."</span>))
+    (<span style="color: #d3869b; font-weight: bold;">0</span> <span style="color: #fabd2f;">&lt;=</span> min_step_quality <span style="color: #fabd2f;">&lt;</span> <span style="color: #d3869b; font-weight: bold;">1</span>) <span style="color: #fabd2f;">||</span> throw(ArgumentError(<span style="color: #b8bb26;">" 0 &lt;= min_step_quality &lt; 1 must hold."</span>))
+    (<span style="color: #d3869b; font-weight: bold;">0</span> <span style="color: #fabd2f;">&lt;</span> good_step_quality <span style="color: #fabd2f;">&lt;=</span> <span style="color: #d3869b; font-weight: bold;">1</span>) <span style="color: #fabd2f;">||</span> throw(ArgumentError(<span style="color: #b8bb26;">" 0 &lt; good_step_quality &lt;= 1 must hold."</span>))
+    (min_step_quality <span style="color: #fabd2f;">&lt;</span> good_step_quality) <span style="color: #fabd2f;">||</span> throw(ArgumentError(<span style="color: #b8bb26;">"min_step_quality &lt; good_step_quality must hold."</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia" id="orgbc9f4bb">MAX_LAMBDA = <span style="color: #d3869b; font-weight: bold;">1e16</span> <span style="color: #928374;"># </span><span style="color: #928374;">minimum trust region radius</span>
+MIN_LAMBDA = <span style="color: #d3869b; font-weight: bold;">1e-16</span> <span style="color: #928374;"># </span><span style="color: #928374;">maximum trust region radius</span>
+MIN_DIAGONAL = <span style="color: #d3869b; font-weight: bold;">1e-6</span> <span style="color: #928374;"># </span><span style="color: #928374;">lower bound on values of diagonal matrix used to regularize the trust region step</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">    converged = <span style="color: #d3869b;">false</span>
+    x_converged = <span style="color: #d3869b;">false</span>
+    g_converged = <span style="color: #d3869b;">false</span>
+    iterCt = <span style="color: #d3869b; font-weight: bold;">0</span>
+    x = copy(initial_x)
+    delta_x = copy(initial_x)
+    a = similar(x)
+
+    trial_f = similar(value(df))
+    residual = sum(abs2, value(df))
+</pre>
+</div>
+
+
+
+<div class="org-src-container">
+<pre class="src src-julia" id="orga5d17bc">    <span style="color: #928374;"># </span><span style="color: #928374;">Create buffers</span>
+    n = length(x)
+    m = length(value(df))
+    JJ = Matrix{T}(<span style="color: #d3869b;">undef</span>, n, n)
+    n_buffer = Vector{T}(<span style="color: #d3869b;">undef</span>, n)
+    Jdelta_buffer = similar(value(df))
+
+    <span style="color: #928374;"># </span><span style="color: #928374;">and an alias for the jacobian</span>
+    J = jacobian(df)
+    dir_deriv = Array{T}(<span style="color: #d3869b;">undef</span>,m)
+    v = Array{T}(<span style="color: #d3869b;">undef</span>,n)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia" id="orgd8af548">    <span style="color: #928374;"># </span><span style="color: #928374;">Maintain a trace of the system.</span>
+    tr = OptimizationTrace{LevenbergMarquardt}()
+    <span style="color: #fb4934;">if</span> show_trace
+        d = Dict(<span style="color: #b8bb26;">"lambda"</span> <span style="color: #fabd2f;">=&gt;</span> lambda)
+        os = OptimizationState{LevenbergMarquardt}(iterCt, sum(abs2, value(df)), <span style="color: #d3869b;">NaN</span>, d)
+        push!(tr, os)
+        println(os)
+    <span style="color: #fb4934;">end</span>
+</pre>
+</div>
+
+
+
+<p>
+We want to solve:
+\(argmin 0.5*||J(x)*\delta_x + f(x)||^2 + \lambda*||diagm(J'* J) * \delta_x||^2\)
+</p>
+
+<p>
+Solving for the minimum gives:
+</p>
+
+<p>
+\((J'*J + \lambda*diagm(D^t D)) * \delta_x == -J' * f(x)\), where DtD = sum(abs2, J,1)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia" id="org7ba38bc">    <span style="color: #fb4934;">while</span> (<span style="color: #fabd2f;">~</span>converged <span style="color: #fabd2f;">&amp;&amp;</span> iterCt <span style="color: #fabd2f;">&lt;</span> maxIter)
+        <span style="color: #928374;"># </span><span style="color: #928374;">jacobian! will check if x is new or not, so it is only actually</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">evaluated if x was updated last iteration.</span>
+        jacobian!(df, x) <span style="color: #928374;"># </span><span style="color: #928374;">has alias J</span>
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">we want to solve:</span>
+        <span style="color: #928374;">#    </span><span style="color: #928374;">argmin 0.5*||J(x)*delta_x + f(x)||^2 + lambda*||diagm(J'*J)*delta_x||^2</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">Solving for the minimum gives:</span>
+        <span style="color: #928374;">#    </span><span style="color: #928374;">(J'*J + lambda*diagm(DtD)) * delta_x == -J' * f(x), where DtD = sum(abs2, J,1)</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">Where we have used the equivalence: diagm(J'*J) = diagm(sum(abs2, J,1))</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">It is additionally useful to bound the elements of DtD below to help</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">prevent "parameter evaporation".</span>
+
+        DtD = vec(sum(abs2, J, dims=<span style="color: #d3869b; font-weight: bold;">1</span>))
+        <span style="color: #fb4934;">for</span> i <span style="color: #fb4934;">in</span> <span style="color: #d3869b; font-weight: bold;">1</span>:length(DtD)
+            <span style="color: #fb4934;">if</span> DtD[i] <span style="color: #fabd2f;">&lt;=</span> MIN_DIAGONAL
+                DtD[i] = MIN_DIAGONAL
+            <span style="color: #fb4934;">end</span>
+        <span style="color: #fb4934;">end</span>
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">delta_x = ( J'*J + lambda * Diagonal(DtD) ) \ ( -J'*value(df) )</span>
+        mul!(JJ, transpose(J), J)
+        <span style="color: #8ec07c; font-weight: bold;">@simd</span> <span style="color: #fb4934;">for</span> i <span style="color: #fb4934;">in</span> <span style="color: #d3869b; font-weight: bold;">1</span>:n
+            <span style="color: #8ec07c; font-weight: bold;">@inbounds</span> JJ[i, i] <span style="color: #fabd2f;">+=</span> lambda <span style="color: #fabd2f;">*</span> DtD[i]
+        <span style="color: #fb4934;">end</span>
+        <span style="color: #928374;">#</span><span style="color: #928374;">n_buffer is delta C, JJ is g compared to Mark's code</span>
+        mul!(n_buffer, transpose(J), value(df))
+        rmul!(n_buffer, <span style="color: #fabd2f;">-</span><span style="color: #d3869b; font-weight: bold;">1</span>)
+
+        v .= JJ <span style="color: #fabd2f;">\</span> n_buffer
+
+
+        <span style="color: #fb4934;">if</span> avv!<span style="color: #fabd2f;"> !=</span> <span style="color: #d3869b;">nothing</span>
+            <span style="color: #928374;">#</span><span style="color: #928374;">GEODESIC ACCELERATION PART</span>
+            avv!(dir_deriv, x, v)
+            mul!(a, transpose(J), dir_deriv)
+            rmul!(a, <span style="color: #fabd2f;">-</span><span style="color: #d3869b; font-weight: bold;">1</span>) <span style="color: #928374;">#</span><span style="color: #928374;">we multiply by -1 before the decomposition/division</span>
+            LAPACK.potrf!(<span style="color: #b8bb26;">'U'</span>, JJ) <span style="color: #928374;">#</span><span style="color: #928374;">in place cholesky decomposition</span>
+            LAPACK.potrs!(<span style="color: #b8bb26;">'U'</span>, JJ, a) <span style="color: #928374;">#</span><span style="color: #928374;">divides a by JJ, taking into account the fact that JJ is now the `U` cholesky decoposition of what it was before</span>
+            rmul!(a, <span style="color: #d3869b; font-weight: bold;">0.5</span>)
+            delta_x .= v .<span style="color: #fabd2f;">+</span> a
+            <span style="color: #928374;">#</span><span style="color: #928374;">end of the GEODESIC ACCELERATION PART</span>
+        <span style="color: #fb4934;">else</span>
+            delta_x = v
+        <span style="color: #fb4934;">end</span>
+
+
+
+
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">apply box constraints</span>
+        <span style="color: #fb4934;">if</span><span style="color: #fabd2f;"> !</span>isempty(lower)
+            <span style="color: #8ec07c; font-weight: bold;">@simd</span> <span style="color: #fb4934;">for</span> i <span style="color: #fb4934;">in</span> <span style="color: #d3869b; font-weight: bold;">1</span>:n
+               <span style="color: #8ec07c; font-weight: bold;">@inbounds</span> delta_x[i] = max(x[i] <span style="color: #fabd2f;">+</span> delta_x[i], lower[i]) <span style="color: #fabd2f;">-</span> x[i]
+            <span style="color: #fb4934;">end</span>
+        <span style="color: #fb4934;">end</span>
+        <span style="color: #fb4934;">if</span><span style="color: #fabd2f;"> !</span>isempty(upper)
+            <span style="color: #8ec07c; font-weight: bold;">@simd</span> <span style="color: #fb4934;">for</span> i <span style="color: #fb4934;">in</span> <span style="color: #d3869b; font-weight: bold;">1</span>:n
+               <span style="color: #8ec07c; font-weight: bold;">@inbounds</span> delta_x[i] = min(x[i] <span style="color: #fabd2f;">+</span> delta_x[i], upper[i]) <span style="color: #fabd2f;">-</span> x[i]
+            <span style="color: #fb4934;">end</span>
+        <span style="color: #fb4934;">end</span>
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">if the linear assumption is valid, our new residual should be:</span>
+        mul!(Jdelta_buffer, J, delta_x)
+        Jdelta_buffer .= Jdelta_buffer .<span style="color: #fabd2f;">+</span> value(df)
+        predicted_residual = sum(abs2, Jdelta_buffer)
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">try the step and compute its quality</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">compute it inplace according to NLSolversBase value(obj, cache, state)</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">interface. No bang (!) because it doesn't update df besides mutating</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">the number of f_calls</span>
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">re-use n_buffer</span>
+        n_buffer .= x .<span style="color: #fabd2f;">+</span> delta_x
+        value(df, trial_f, n_buffer)
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">update the sum of squares</span>
+        trial_residual = sum(abs2, trial_f)
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">step quality = residual change / predicted residual change</span>
+        rho = (trial_residual <span style="color: #fabd2f;">-</span> residual) <span style="color: #fabd2f;">/</span> (predicted_residual <span style="color: #fabd2f;">-</span> residual)
+        <span style="color: #fb4934;">if</span> rho <span style="color: #fabd2f;">&gt;</span> min_step_quality
+            <span style="color: #928374;"># </span><span style="color: #928374;">apply the step to x - n_buffer is ready to be used by the delta_x</span>
+            <span style="color: #928374;"># </span><span style="color: #928374;">calculations after this step.</span>
+            x .= n_buffer
+            <span style="color: #928374;"># </span><span style="color: #928374;">There should be an update_x_value to do this safely</span>
+            copyto!(df.x_f, x)
+            copyto!(value(df), trial_f)
+            residual = trial_residual
+            <span style="color: #fb4934;">if</span> rho <span style="color: #fabd2f;">&gt;</span> good_step_quality
+                <span style="color: #928374;"># </span><span style="color: #928374;">increase trust region radius</span>
+                lambda = max(lambda_decrease<span style="color: #fabd2f;">*</span>lambda, MIN_LAMBDA)
+            <span style="color: #fb4934;">end</span>
+        <span style="color: #fb4934;">else</span>
+            <span style="color: #928374;"># </span><span style="color: #928374;">decrease trust region radius</span>
+            lambda = min(lambda_increase<span style="color: #fabd2f;">*</span>lambda, MAX_LAMBDA)
+        <span style="color: #fb4934;">end</span>
+
+        iterCt <span style="color: #fabd2f;">+=</span> <span style="color: #d3869b; font-weight: bold;">1</span>
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">show state</span>
+        <span style="color: #fb4934;">if</span> show_trace
+            g_norm = norm(J' <span style="color: #fabd2f;">*</span> value(df), <span style="color: #d3869b;">Inf</span>)
+            d = Dict(<span style="color: #b8bb26;">"g(x)"</span> <span style="color: #fabd2f;">=&gt;</span> g_norm, <span style="color: #b8bb26;">"dx"</span> <span style="color: #fabd2f;">=&gt;</span> delta_x, <span style="color: #b8bb26;">"lambda"</span> <span style="color: #fabd2f;">=&gt;</span> lambda)
+            os = OptimizationState{LevenbergMarquardt}(iterCt, sum(abs2, value(df)), g_norm, d)
+            push!(tr, os)
+            println(os)
+        <span style="color: #fb4934;">end</span>
+
+        <span style="color: #928374;"># </span><span style="color: #928374;">check convergence criteria:</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">1. Small gradient: norm(J^T * value(df), Inf) &lt; g_tol</span>
+        <span style="color: #928374;"># </span><span style="color: #928374;">2. Small step size: norm(delta_x) &lt; x_tol</span>
+        <span style="color: #fb4934;">if</span> norm(J' <span style="color: #fabd2f;">*</span> value(df), <span style="color: #d3869b;">Inf</span>) <span style="color: #fabd2f;">&lt;</span> g_tol
+            g_converged = <span style="color: #d3869b;">true</span>
+        <span style="color: #fb4934;">end</span>
+        <span style="color: #fb4934;">if</span> norm(delta_x) <span style="color: #fabd2f;">&lt;</span> x_tol<span style="color: #fabd2f;">*</span>(x_tol <span style="color: #fabd2f;">+</span> norm(x))
+            x_converged = <span style="color: #d3869b;">true</span>
+        <span style="color: #fb4934;">end</span>
+        converged = g_converged <span style="color: #fabd2f;">|</span> x_converged
+    <span style="color: #fb4934;">end</span>
+
+    MultivariateOptimizationResults(
+        LevenbergMarquardt(),    <span style="color: #928374;"># </span><span style="color: #928374;">method</span>
+        initial_x,             <span style="color: #928374;"># </span><span style="color: #928374;">initial_x</span>
+        x,                     <span style="color: #928374;"># </span><span style="color: #928374;">minimizer</span>
+        sum(abs2, value(df)),       <span style="color: #928374;"># </span><span style="color: #928374;">minimum</span>
+        iterCt,                <span style="color: #928374;"># </span><span style="color: #928374;">iterations</span>
+       <span style="color: #fabd2f;"> !</span>converged,            <span style="color: #928374;"># </span><span style="color: #928374;">iteration_converged</span>
+        x_converged,           <span style="color: #928374;"># </span><span style="color: #928374;">x_converged</span>
+        <span style="color: #d3869b; font-weight: bold;">0.0</span>,                   <span style="color: #928374;"># </span><span style="color: #928374;">x_tol</span>
+        <span style="color: #d3869b; font-weight: bold;">0.0</span>,
+        <span style="color: #d3869b;">false</span>,                 <span style="color: #928374;"># </span><span style="color: #928374;">f_converged</span>
+        <span style="color: #d3869b; font-weight: bold;">0.0</span>,                   <span style="color: #928374;"># </span><span style="color: #928374;">f_tol</span>
+        <span style="color: #d3869b; font-weight: bold;">0.0</span>,
+        g_converged,           <span style="color: #928374;"># </span><span style="color: #928374;">g_converged</span>
+        g_tol,                  <span style="color: #928374;"># </span><span style="color: #928374;">g_tol</span>
+        <span style="color: #d3869b; font-weight: bold;">0.0</span>,
+        <span style="color: #d3869b;">false</span>,                 <span style="color: #928374;"># </span><span style="color: #928374;">f_increased</span>
+        tr,                    <span style="color: #928374;"># </span><span style="color: #928374;">trace</span>
+        first(df.f_calls),               <span style="color: #928374;"># </span><span style="color: #928374;">f_calls</span>
+        first(df.df_calls),               <span style="color: #928374;"># </span><span style="color: #928374;">g_calls</span>
+        <span style="color: #d3869b; font-weight: bold;">0</span>                      <span style="color: #928374;"># </span><span style="color: #928374;">h_calls</span>
+    )
+<span style="color: #fb4934;">end</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org97fc747" class="outline-4">
+<h4 id="org97fc747"><span class="section-number-4">3.2.3</span> unkown types</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<ul class="org-ul">
+<li>Optimizer</li>
+<li>OnceDifferentiable</li>
+</ul>
+</div>
+</div>
+</div>
 
 <div id="outline-container-org863e896" class="outline-3">
-<h3 id="org863e896"><span class="section-number-3">3.2</span> statsbase</h3>
-<div class="outline-text-3" id="text-3-2">
+<h3 id="org863e896"><span class="section-number-3">3.3</span> statsbase</h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
 <a href="./juliaPackages/StatsBase.jl/src/statmodels.jl">./juliaPackages/StatsBase.jl/src/statmodels.jl</a>
 </p>
@@ -446,13 +869,163 @@ fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
 </div>
 
 
+<div id="outline-container-orgea8be7a" class="outline-2">
+<h2 id="orgea8be7a"><span class="section-number-2">4</span> python gauss newton</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Code taken from :
+<a href="https://medium.com/@omyllymaki/gauss-newton-algorithm-implementation-from-scratch-55ebe56aac2e">Gauss-Newton algorithm implementation from scratch | by Ossi Myllymäki | Medium</a>
+</p>
+
+<p>
+Given response vector y, dependent variable x and fit function f
+minimize sum(residual<sup>2</sup>) where residual =f(x,coefficients) - y
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #fb4934;">import</span> logging
+<span style="color: #fb4934;">from</span> typing <span style="color: #fb4934;">import</span> Callable
+<span style="color: #fb4934;">import</span> numpy <span style="color: #fb4934;">as</span> np
+<span style="color: #fb4934;">from</span> numpy.linalg <span style="color: #fb4934;">import</span> pinv
+
+<span style="color: #8ec07c;">logger</span> = logging.getLogger(<span style="color: #fe8019;">__name__</span>)
+
+<span style="color: #fb4934;">class</span> <span style="color: #fabd2f;">GNSolver</span>:
+    <span style="color: #dfd2b8;">"""</span>
+<span style="color: #dfd2b8;">    Gauss-Newton solver</span>
+
+<span style="color: #dfd2b8;">    Given response vector y, dependent variable x</span>
+<span style="color: #dfd2b8;">    and fit function f Minimize sum(residual^2)</span>
+<span style="color: #dfd2b8;">    where residual = f(x, coefficients) - y</span>
+<span style="color: #dfd2b8;">    """</span>
+
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">__init__</span>(<span style="color: #fb4934;">self</span>,
+                 fit_function: Callable,
+                 max_iter: <span style="color: #fe8019;">int</span> = <span style="color: #d3869b; font-weight: bold;">1000</span>,
+                 tolerance_difference: <span style="color: #fe8019;">float</span> = <span style="color: #d3869b; font-weight: bold;">10</span> ** (-<span style="color: #d3869b; font-weight: bold;">16</span>),
+                 tolerance:<span style="color: #fe8019;">float</span> = <span style="color: #d3869b; font-weight: bold;">10</span> ** (-<span style="color: #d3869b; font-weight: bold;">9</span>),
+                 init_guess: np.ndarray = <span style="color: #d3869b;">None</span>):
+        <span style="color: #fb4934;">self</span>.fit_function = fit_function
+        <span style="color: #fb4934;">self</span>.max_iter = max_iter
+        <span style="color: #fb4934;">self</span>.tolerance_difference = tolerance_difference
+        <span style="color: #fb4934;">self</span>.tolerance = tolerance
+        <span style="color: #fb4934;">self</span>.coefficients = <span style="color: #d3869b;">None</span>
+        <span style="color: #fb4934;">self</span>.x = <span style="color: #d3869b;">None</span>
+        <span style="color: #fb4934;">self</span>.y = <span style="color: #d3869b;">None</span>
+        <span style="color: #fb4934;">self</span>.init_guess = <span style="color: #d3869b;">None</span>
+        <span style="color: #fb4934;">if</span> init_guess <span style="color: #fb4934;">is</span> <span style="color: #fb4934;">not</span> <span style="color: #d3869b;">None</span>:
+            <span style="color: #fb4934;">self</span>.init_guess = init_guess
+
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">fit</span>(<span style="color: #fb4934;">self</span>,
+            x: np.ndarray,
+            y: np.ndarray,
+            init_guess: np.ndarray = <span style="color: #d3869b;">None</span>) -&gt; np.ndarray:
+        <span style="color: #dfd2b8;">"""</span>
+<span style="color: #dfd2b8;">        Fit coefficients by minimizing RSE</span>
+<span style="color: #dfd2b8;">        """</span>
+        <span style="color: #fb4934;">self</span>.x = x
+        <span style="color: #fb4934;">self</span>.y = y
+        <span style="color: #fb4934;">if</span> init_guess <span style="color: #fb4934;">is</span> <span style="color: #fb4934;">not</span> <span style="color: #d3869b;">None</span>:
+            <span style="color: #fb4934;">self</span>.init_guess = init_guess
+
+        <span style="color: #fb4934;">if</span> init_guess <span style="color: #fb4934;">is</span> <span style="color: #d3869b;">None</span>:
+            <span style="color: #fb4934;">raise</span> <span style="color: #fabd2f;">Exception</span>(<span style="color: #b8bb26;">"Initial guess needs to be provided"</span>)
+
+        <span style="color: #fb4934;">self</span>.coefficients = <span style="color: #fb4934;">self</span>.init_guess
+        <span style="color: #8ec07c;">rmse_prev</span> = np.inf
+        <span style="color: #fb4934;">for</span> k <span style="color: #fb4934;">in</span> <span style="color: #fe8019;">range</span>(<span style="color: #fb4934;">self</span>.max_iter):
+
+            <span style="color: #8ec07c;">residual</span> = <span style="color: #fb4934;">self</span>.get_residual()
+            <span style="color: #8ec07c;">jacobian</span> = <span style="color: #fb4934;">self</span>._calculate_jacobian(<span style="color: #fb4934;">self</span>.coefficients, step=<span style="color: #d3869b; font-weight: bold;">10</span> ** (-<span style="color: #d3869b; font-weight: bold;">6</span>))
+            <span style="color: #fb4934;">self</span>.coefficients = <span style="color: #fb4934;">self</span>.coefficients - <span style="color: #fb4934;">self</span>._calculate_pseudinverse(jacobian) @ residual
+            <span style="color: #8ec07c;">rmse</span> = np.sqrt(np.<span style="color: #fe8019;">sum</span>(residual ** <span style="color: #d3869b; font-weight: bold;">2</span>))
+            logger.info(f<span style="color: #b8bb26;">"Round {k}: RMSE {rmse}"</span>)
+
+            <span style="color: #fb4934;">if</span> <span style="color: #fb4934;">self</span>.tolerance_difference <span style="color: #fb4934;">is</span> <span style="color: #fb4934;">not</span> <span style="color: #d3869b;">None</span>:
+                <span style="color: #8ec07c;">diff</span> = np.<span style="color: #fe8019;">abs</span>(rms_prev - rmse)
+                <span style="color: #fb4934;">if</span> diff &lt; <span style="color: #fb4934;">self</span>.tolerance_difference:
+                    logger.info(
+                        <span style="color: #b8bb26;">"RMSE difference between iterations smaller than tolerance. Fit terminated"</span>)
+                    <span style="color: #fb4934;">return</span> <span style="color: #fb4934;">self</span>.coefficients
+            <span style="color: #fb4934;">if</span> rmse &lt; <span style="color: #fb4934;">self</span>.tolerance:
+                logger.info(<span style="color: #b8bb26;">"RMSE error smaller than tolerance. Fit terminated."</span>)
+                <span style="color: #fb4934;">return</span> <span style="color: #fb4934;">self</span>.coefficients
+
+            <span style="color: #8ec07c;">rmse_prev</span> = rmse
+
+        logger.info(<span style="color: #b8bb26;">"Max number of iterations reached. Fit didn't converge"</span>)
+
+        <span style="color: #fb4934;">return</span> <span style="color: #fb4934;">self</span>.coefficients
+
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">predict</span>(<span style="color: #fb4934;">self</span>, x: np.ndarray):
+        <span style="color: #fb4934;">return</span> <span style="color: #fb4934;">self</span>.fit_function(x, <span style="color: #fb4934;">self</span>.coefficients)
+
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">get_residual</span>(<span style="color: #fb4934;">self</span>) -&gt; np.ndarray:
+        <span style="color: #fb4934;">return</span> <span style="color: #fb4934;">self</span>._calculate_residual(<span style="color: #fb4934;">self</span>.coefficients)
+
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">get_estimate</span>(<span style="color: #fb4934;">self</span>) -&gt; np.ndarray:
+        <span style="color: #fb4934;">return</span> <span style="color: #fb4934;">self</span>.fit_function(<span style="color: #fb4934;">self</span>.x, <span style="color: #fb4934;">self</span>.coefficients)
+
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">_calculate_residual</span>(<span style="color: #fb4934;">self</span>, coefficients: np.ndarray) -&gt; np.ndarray:
+        <span style="color: #8ec07c;">y_fit</span> = <span style="color: #fb4934;">self</span>.fit_function(<span style="color: #fb4934;">self</span>.x, coefficients)
+        <span style="color: #fb4934;">return</span> y_fit - <span style="color: #fb4934;">self</span>.y
+
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">_calculate_jacobian</span>(<span style="color: #fb4934;">self</span>,x0):
+        <span style="color: #fb4934;">pass</span>
+
+    @<span style="color: #fe8019;">staticmethod</span>
+    <span style="color: #fb4934;">def</span> <span style="color: #8ec07c;">_calculate_pseudoinverse</span>(x: np.ndarray) -&gt; np.ndarray
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8181d27" class="outline-2">
+<h2 id="org8181d27"><span class="section-number-2">5</span> fortran code enlsip</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgf0cc2cd" class="outline-3">
+<h3 id="orgf0cc2cd"><span class="section-number-3">5.1</span> variables</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+FEX65 and HEX65 are user written subroutines
+<i>BACK</i> is name of common block for variables :
+BESTRK, BESTPGG, NRREST, LATTRY
+</p>
+
+<div class="org-src-container">
+<pre class="src src-fortran">    <span style="color: #fabd2f;">EXTERNAL</span> <span style="color: #8ec07c;">FEX65</span>,<span style="color: #8ec07c;">HEX65</span>
+    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">N</span>,<span style="color: #8ec07c;">M</span>,<span style="color: #8ec07c;">P</span>,<span style="color: #8ec07c;">L</span>
+    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">EXIT</span>
+    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">ACTIVE</span>(<span style="color: #d3869b; font-weight: bold;">10</span>),<span style="color: #8ec07c;">WINT</span>(<span style="color: #d3869b; font-weight: bold;">36</span>)
+    <span style="color: #fabd2f;">DOUBLE PRECISION</span>
+    *     H(<span style="color: #d3869b; font-weight: bold;">7</span>),X(<span style="color: #d3869b; font-weight: bold;">3</span>),F(<span style="color: #d3869b; font-weight: bold;">10</span>),WREAL(<span style="color: #d3869b; font-weight: bold;">136</span>)
+    <span style="color: #fabd2f;">DOUBLE PRECISION</span>
+    *    BESTRK,BESTPG
+    <span style="color: #fabd2f;">INTEGER</span> <span style="color: #8ec07c;">NRREST</span>,<span style="color: #8ec07c;">LATTRY</span>
+    <span style="color: #fabd2f;">COMMON</span> /<span style="color: #8ec07c;">BACK</span>/ BESTRK,BESTPG, NRREST,LATTRY
+    MDI=<span style="color: #d3869b; font-weight: bold;">36</span>
+    MDR=<span style="color: #d3869b; font-weight: bold;">136</span>
+    NOUT=<span style="color: #d3869b; font-weight: bold;">10</span>
+    N=<span style="color: #d3869b; font-weight: bold;">3</span>
+    M=<span style="color: #d3869b; font-weight: bold;">3</span>
+    P=<span style="color: #d3869b; font-weight: bold;">0</span>
+    L=<span style="color: #d3869b; font-weight: bold;">7</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
 <div id="outline-container-orga97bebf" class="outline-2">
-<h2 id="orga97bebf"><span class="section-number-2">4</span> data</h2>
+<h2 id="orga97bebf"><span class="section-number-2">6</span> data</h2>
 </div>
 
 <div id="outline-container-org651b8e9" class="outline-2">
-<h2 id="org651b8e9"><span class="section-number-2">5</span> publishing options</h2>
-<div class="outline-text-2" id="text-5">
+<h2 id="org651b8e9"><span class="section-number-2">7</span> publishing options</h2>
+<div class="outline-text-2" id="text-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #fb4934;">(</span><span style="color: #fb4934;">setq</span> <span style="color: #8ec07c;">org-publish-project-alist</span>
       <span style="color: #8ec07c;">'</span><span style="color: #fabd2f;">(</span><span style="color: #8ec07c;">(</span><span style="color: #b8bb26;">"memoir-org"</span>
@@ -467,7 +1040,7 @@ fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
 
         <span style="color: #8ec07c;">(</span><span style="color: #b8bb26;">"memoir-static"</span>
          <span style="color: #fe8019;">:base-directory</span> <span style="color: #b8bb26;">"~/memoire/static"</span>
-         <span style="color: #fe8019;">:base-extension</span> <span style="color: #b8bb26;">"css</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">js</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">png</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">jpg</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">gif</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">pdf</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">mp3</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">ogg</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">swf"</span>
+         <span style="color: #fe8019;">:base-extension</span> <span style="color: #b8bb26;">"jl</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">css</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">js</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">png</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">jpg</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">gif</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">pdf</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">mp3</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">ogg</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">swf"</span>
          <span style="color: #fe8019;">:publishing-directory</span> <span style="color: #b8bb26;">"~/memoire/docs"</span>
          <span style="color: #fe8019;">:recursive</span> t
          <span style="color: #fe8019;">:publishing-function</span> org-publish-attachment<span style="color: #8ec07c;">)</span>
@@ -475,12 +1048,128 @@ fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
         <span style="color: #8ec07c;">(</span><span style="color: #b8bb26;">"memoir"</span> <span style="color: #fe8019;">:components</span> <span style="color: #fb4934;">(</span><span style="color: #b8bb26;">"memoir-org"</span> <span style="color: #b8bb26;">"memoir-static"</span><span style="color: #fb4934;">)</span><span style="color: #8ec07c;">)</span><span style="color: #fabd2f;">)</span><span style="color: #fb4934;">)</span>
 </pre>
 </div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">memoir-org</td>
+<td class="org-left">:base-directory</td>
+<td class="org-left">~/memoire/src</td>
+<td class="org-left">:base-extension</td>
+<td class="org-left">org</td>
+<td class="org-left">:publishing-directory</td>
+<td class="org-left">~/memoire/docs</td>
+<td class="org-left">:recursive</td>
+<td class="org-left">t</td>
+<td class="org-left">:exclude</td>
+<td class="org-left"><b><i>ignore</i></b></td>
+<td class="org-left">:publishing-function</td>
+<td class="org-left">org-html-publish-to-html</td>
+<td class="org-left">:headline-levels</td>
+<td class="org-left">4</td>
+<td class="org-left">:auto-preamble</td>
+<td class="org-left">t</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">memoir-static</td>
+<td class="org-left">:base-directory</td>
+<td class="org-left">~/memoire/static</td>
+<td class="org-left">:base-extension</td>
+<td class="org-left">jl\</td>
+<td class="org-left">css\</td>
+<td class="org-left">js\</td>
+<td class="org-left">png\</td>
+<td class="org-left">jpg\</td>
+<td class="org-left">gif\</td>
+<td class="org-left">pdf\</td>
+<td class="org-left">mp3\</td>
+<td class="org-left">ogg\</td>
+<td class="org-left">swf</td>
+<td class="org-left">:publishing-directory</td>
+<td class="org-left">~/memoire/docs</td>
+<td class="org-left">:recursive</td>
+<td class="org-left">t</td>
+<td class="org-left">:publishing-function</td>
+<td class="org-left">org-publish-attachment</td>
+</tr>
+
+<tr>
+<td class="org-left">memoir</td>
+<td class="org-left">:components</td>
+<td class="org-left">(memoir-org memoir-static)</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: frederic boileau</p>
-<p class="date">Created: 2020-09-24 Thu 22:16</p>
+<p class="date">Created: 2020-09-25 Fri 18:10</p>
 </div>
 </body>
 </html>
