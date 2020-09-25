@@ -7,3 +7,6 @@
 [submodule "juliaPackages/StatsBase.jl"]
 	path = src/juliaPackages/StatsBase.jl
 	url = https://github.com/JuliaStats/StatsBase.jl.git
+[submodule "src/juliaPackages/Optim.jl"]
+	path = src/juliaPackages/Optim.jl
+	url = https://github.com/JuliaNLSolvers/Optim.jl.git
