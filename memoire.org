@@ -1,0 +1,195 @@
+#+title: moindres carrés dans la prévision de consommation d'électricité
+#+author: frederic boileau
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+* fortran code enlsip
+** variables
+FEX65 and HEX65 are user written subroutines
+/BACK/ is name of common block for variables :
+BESTRK, BESTPGG, NRREST, LATTRY
+
+#+BEGIN_SRC fortran
+    EXTERNAL FEX65,HEX65
+    INTEGER N,M,P,L
+    INTEGER EXIT
+    INTEGER ACTIVE(10),WINT(36)
+    DOUBLE PRECISION
+    *     H(7),X(3),F(10),WREAL(136)
+    DOUBLE PRECISION
+    *    BESTRK,BESTPG
+    INTEGER NRREST,LATTRY
+    COMMON /BACK/ BESTRK,BESTPG, NRREST,LATTRY
+    MDI=36
+    MDR=136
+    NOUT=10
+    N=3
+    M=3
+    P=0
+    L=7
+#+END_SRC
+
+
+* lit review of least square models
+** TODO Liste des publications pertinentes [0/10]
+** TODO Approches pour faire face aux contraintes
+*** projection
+*** trust region
+
+* TODO julia code
+** lsqfit
+file:./juliaPackages/LsqFit.jl/src/curve_fit.jl
+
+P : parameter, abstract
+R : residual, abstract
+J: jacobian, abstract
+W : weight , abstract array
+
+#+BEGIN_SRC julia
+struct LsqFitResult{P, R, J, W <: AbstractArray}
+    param::P
+    resid::R
+    jacobian::J
+    converged::Bool
+    wt::W
+end
+#+END_SRC
+
+
+
+#+BEGIN_SRC  julia
+StatsBase.coef(lfr::LsqFitResult) = lfr.param
+StatsBase.dof(lfr::LsqFitResult) = nobs(lfr) - length(coef(lfr))
+StatsBase.nobs(lfr::LsqFitResult) = length(lfr.resid)
+StatsBase.rss(lfr::LsqFitResult) = sum(abs2, lfr.resid)
+StatsBase.weights(lfr::LsqFitResult) = lfr.wt
+StatsBase.residuals(lfr::LsqFitResult) = lfr.resid
+mse(lfr::LsqFitResult) = rss(lfr)/dof(lfr)
+#+END_SRC
+
+dof: degrees of freedom
+nobs: number of independent obersations on which the model was defined
+rss: residual sum of squares
+
+
+#+BEGIN_SRC julia
+# provide a method for those who have their own Jacobian function
+function lmfit(f, g, p0::AbstractArray, wt::AbstractArray; kwargs...)
+    r = f(p0)
+    R = OnceDifferentiable(f, g, p0, similar(r); inplace=false)
+    lmfit(R, p0, wt; kwargs...)
+end
+#+END_SRC
+
+- apply f to get residuals
+- OnceDifferentiable, similar
+- lmfit(R, p0 wt; kwargs...)
+
+*** test
+x: array of independent variables
+p: array of model parameters
+apply to the full dataset with @.
+#+BEGIN_SRC julia :results output :session
+using LsqFit
+@. model(x, p) = p[1]*exp(-x*p[2])
+xdata = range(0, stop=10, length=20)
+ydata = model(xdata, [1.0 , 2.0]) + 0.01*randn(length(xdata))
+p0 = [0.5, 0.5];
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+model (generic function with 1 method)
+0.0:0.5263157894736842:10.0
+20-element Array{Float64,1}:
+  0.9933271020066862
+  0.34009539314609366
+  0.12174084759819304
+  0.061289463674629535
+  0.021993391058954904
+  0.003014853710991665
+  0.010389981854704487
+  0.009441140905918605
+  0.0011803494220172185
+ -0.00405435598346164
+ -0.006928645358409931
+  0.013533686794186
+ -0.006040572290918142
+ -0.008036423298907294
+  0.004210055148295414
+ -0.007881953609191202
+ -0.009268967098313112
+  0.014162672576797122
+ -0.019190093954619635
+ -0.002924086242983699
+2-element Array{Float64,1}:
+ 0.5
+ 0.5
+#+end_example
+
+t is a composite type (LsqFitResult), with some interesting values:
+dof(fit): degrees of freedom
+coef(fit): best fit parameters
+fit.resid: residuals = vector of residuals
+fit.jacobian: estimated Jacobian at solution
+#+BEGIN_SRC julia
+fit = curve_fit(model, xdata, yadata, p0)
+lb = [1.1, -0.5]
+ub = [1.9, Inf]
+p0_bounds = [1.2, 1.2] # we have to start inside the bounds
+# Optional upper and/or lower bounds on the free parameters can be passed as an argument.
+# Bounded and unbouded variables can be mixed by setting `-Inf` if no lower bounds
+# is to be enforced for that variable and similarly for `+Inf`
+fit_bounds = curve_fit(model, xdata, ydata, p0_bounds, lower=lb, upper=ub)
+
+# We can estimate errors on the fit parameters,
+# to get standard error of each parameter:
+sigma = stderror(fit)
+# to get margin of error and confidence interval of each parameter at 5% significance level:
+margin_of_error = margin_error(fit, 0.05)
+confidence_inter = confidence_interval(fit, 0.05)
+
+# The finite difference method is used above to approximate the Jacobian.
+# Alternatively, a function which calculates it exactly can be supplied instead.
+function jacobian_model(x,p)
+    J = Array{Float64}(undef, length(x), length(p))
+    @. J[:,1] = exp(-x*p[2])     #dmodel/dp[1]
+    @. @views J[:,2] = -x*p[1]*J[:,1] #dmodel/dp[2], thanks to @views we don't allocate memory for the J[:,1] slice
+    J
+end
+fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
+#+END_SRC
+
+#+RESULTS:
+
+** statsbase
+file:./juliaPackages/StatsBase.jl/src/statmodels.jl
+
+
+* data
+
+* publishing options
+#+BEGIN_SRC emacs-lisp
+(setq org-publish-project-alist
+      '(("memoir-org"
+         :base-directory "~/memoire/src"
+         :base-extension "org"
+         :publishing-directory "~/memoire/docs"
+         :recursive t
+         :exclude "*/ignore/*"
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4             ; Just the default for this project.
+         :auto-preamble t)
+
+        ("memoir-static"
+         :base-directory "~/memoire/static"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/memoire/docs"
+         :recursive t
+         :publishing-function org-publish-attachment)
+
+        ("memoir" :components ("memoir-org" "memoir-static"))))
+#+END_SRC
+
+#+RESULTS:
+| memoir-org    | :base-directory | ~/memoire/src              | :base-extension | org  | :publishing-directory | ~/memoire/docs | :recursive | t    | :exclude | */ignore/* | :publishing-function | org-html-publish-to-html | :headline-levels      |              4 | :auto-preamble | t |                      |                        |
+| memoir-static | :base-directory | ~/memoire/static           | :base-extension | css\ | js\                   | png\           | jpg\       | gif\ | pdf\     | mp3\       | ogg\                 | swf                      | :publishing-directory | ~/memoire/docs | :recursive     | t | :publishing-function | org-publish-attachment |
+| memoir        | :components     | (memoir-org memoir-static) |                 |      |                       |                |            |      |          |            |                      |                          |                       |                |                |   |                      |                        |
