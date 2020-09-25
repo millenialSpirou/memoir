@@ -1,6 +1,6 @@
 #+title: moindres carrés dans la prévision de consommation d'électricité
 #+author: frederic boileau
-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 * fortran code enlsip
 ** variables
 FEX65 and HEX65 are user written subroutines
@@ -170,7 +170,7 @@ file:./juliaPackages/StatsBase.jl/src/statmodels.jl
 #+BEGIN_SRC emacs-lisp
 (setq org-publish-project-alist
       '(("memoir-org"
-         :base-directory "~/memoire"
+         :base-directory "~/memoire/src"
          :base-extension "org"
          :publishing-directory "~/memoire/docs"
          :recursive t
@@ -180,7 +180,7 @@ file:./juliaPackages/StatsBase.jl/src/statmodels.jl
          :auto-preamble t)
 
         ("memoir-static"
-         :base-directory "~/memoire/"
+         :base-directory "~/memoire/static"
          :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
          :publishing-directory "~/memoire/docs"
          :recursive t

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-24 Thu 22:05 -->
+<!-- 2020-09-24 Thu 22:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>moindres carrés dans la prévision de consommation d&rsquo;électricité</title>
@@ -193,6 +193,7 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
@@ -223,44 +224,43 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org133d2a2">1. fortran code enlsip</a>
+<li><a href="#org8181d27">1. fortran code enlsip</a>
 <ul>
-<li><a href="#org812428a">1.1. variables</a></li>
+<li><a href="#orgf0cc2cd">1.1. variables</a></li>
 </ul>
 </li>
-<li><a href="#orgb2e3296">2. lit review of least square models</a>
+<li><a href="#org754b816">2. lit review of least square models</a>
 <ul>
-<li><a href="#org5c10d1c">2.1. <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></a></li>
-<li><a href="#orgff64d4e">2.2. <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</a>
+<li><a href="#orga27247f">2.1. <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></a></li>
+<li><a href="#org05719c4">2.2. <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</a>
 <ul>
-<li><a href="#orgfcbff74">2.2.1. projection</a></li>
-<li><a href="#orga1c89c6">2.2.2. trust region</a></li>
+<li><a href="#orgd77e1a8">2.2.1. projection</a></li>
+<li><a href="#orgfa3ff4a">2.2.2. trust region</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org83ad3ad">3. <span class="todo TODO">TODO</span> julia code</a>
+<li><a href="#org143d767">3. <span class="todo TODO">TODO</span> julia code</a>
 <ul>
-<li><a href="#org49d8634">3.1. lsqfit</a>
+<li><a href="#org87cc9fb">3.1. lsqfit</a>
 <ul>
-<li><a href="#org1423444">3.1.1. test</a></li>
+<li><a href="#org2e90cdd">3.1.1. test</a></li>
 </ul>
 </li>
-<li><a href="#org37f3b87">3.2. statsbase</a></li>
+<li><a href="#org863e896">3.2. statsbase</a></li>
 </ul>
 </li>
-<li><a href="#orgbcd0749">4. data</a></li>
-<li><a href="#org3b42381">5. publishing options</a></li>
+<li><a href="#orga97bebf">4. data</a></li>
+<li><a href="#org651b8e9">5. publishing options</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org133d2a2" class="outline-2">
-<h2 id="org133d2a2"><span class="section-number-2">1</span> fortran code enlsip</h2>
+<div id="outline-container-org8181d27" class="outline-2">
+<h2 id="org8181d27"><span class="section-number-2">1</span> fortran code enlsip</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org812428a" class="outline-3">
-<h3 id="org812428a"><span class="section-number-3">1.1</span> variables</h3>
+<div id="outline-container-orgf0cc2cd" class="outline-3">
+<h3 id="orgf0cc2cd"><span class="section-number-3">1.1</span> variables</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 FEX65 and HEX65 are user written subroutines
@@ -293,32 +293,32 @@ BESTRK, BESTPGG, NRREST, LATTRY
 </div>
 
 
-<div id="outline-container-orgb2e3296" class="outline-2">
-<h2 id="orgb2e3296"><span class="section-number-2">2</span> lit review of least square models</h2>
+<div id="outline-container-org754b816" class="outline-2">
+<h2 id="org754b816"><span class="section-number-2">2</span> lit review of least square models</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org5c10d1c" class="outline-3">
-<h3 id="org5c10d1c"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></h3>
+<div id="outline-container-orga27247f" class="outline-3">
+<h3 id="orga27247f"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> Liste des publications pertinentes <code>[0/10]</code></h3>
 </div>
-<div id="outline-container-orgff64d4e" class="outline-3">
-<h3 id="orgff64d4e"><span class="section-number-3">2.2</span> <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</h3>
+<div id="outline-container-org05719c4" class="outline-3">
+<h3 id="org05719c4"><span class="section-number-3">2.2</span> <span class="todo TODO">TODO</span> Approches pour faire face aux contraintes</h3>
 <div class="outline-text-3" id="text-2-2">
 </div>
-<div id="outline-container-orgfcbff74" class="outline-4">
-<h4 id="orgfcbff74"><span class="section-number-4">2.2.1</span> projection</h4>
+<div id="outline-container-orgd77e1a8" class="outline-4">
+<h4 id="orgd77e1a8"><span class="section-number-4">2.2.1</span> projection</h4>
 </div>
-<div id="outline-container-orga1c89c6" class="outline-4">
-<h4 id="orga1c89c6"><span class="section-number-4">2.2.2</span> trust region</h4>
+<div id="outline-container-orgfa3ff4a" class="outline-4">
+<h4 id="orgfa3ff4a"><span class="section-number-4">2.2.2</span> trust region</h4>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org83ad3ad" class="outline-2">
-<h2 id="org83ad3ad"><span class="section-number-2">3</span> <span class="todo TODO">TODO</span> julia code</h2>
+<div id="outline-container-org143d767" class="outline-2">
+<h2 id="org143d767"><span class="section-number-2">3</span> <span class="todo TODO">TODO</span> julia code</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org49d8634" class="outline-3">
-<h3 id="org49d8634"><span class="section-number-3">3.1</span> lsqfit</h3>
+<div id="outline-container-org87cc9fb" class="outline-3">
+<h3 id="org87cc9fb"><span class="section-number-3">3.1</span> lsqfit</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <a href="./juliaPackages/LsqFit.jl/src/curve_fit.jl">./juliaPackages/LsqFit.jl/src/curve_fit.jl</a>
@@ -379,8 +379,8 @@ rss: residual sum of squares
 </ul>
 </div>
 
-<div id="outline-container-org1423444" class="outline-4">
-<h4 id="org1423444"><span class="section-number-4">3.1.1</span> test</h4>
+<div id="outline-container-org2e90cdd" class="outline-4">
+<h4 id="org2e90cdd"><span class="section-number-4">3.1.1</span> test</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 x: array of independent variables
@@ -435,8 +435,8 @@ fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
 </div>
 </div>
 
-<div id="outline-container-org37f3b87" class="outline-3">
-<h3 id="org37f3b87"><span class="section-number-3">3.2</span> statsbase</h3>
+<div id="outline-container-org863e896" class="outline-3">
+<h3 id="org863e896"><span class="section-number-3">3.2</span> statsbase</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 <a href="./juliaPackages/StatsBase.jl/src/statmodels.jl">./juliaPackages/StatsBase.jl/src/statmodels.jl</a>
@@ -446,17 +446,17 @@ fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
 </div>
 
 
-<div id="outline-container-orgbcd0749" class="outline-2">
-<h2 id="orgbcd0749"><span class="section-number-2">4</span> data</h2>
+<div id="outline-container-orga97bebf" class="outline-2">
+<h2 id="orga97bebf"><span class="section-number-2">4</span> data</h2>
 </div>
 
-<div id="outline-container-org3b42381" class="outline-2">
-<h2 id="org3b42381"><span class="section-number-2">5</span> publishing options</h2>
+<div id="outline-container-org651b8e9" class="outline-2">
+<h2 id="org651b8e9"><span class="section-number-2">5</span> publishing options</h2>
 <div class="outline-text-2" id="text-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #fb4934;">(</span><span style="color: #fb4934;">setq</span> <span style="color: #8ec07c;">org-publish-project-alist</span>
       <span style="color: #8ec07c;">'</span><span style="color: #fabd2f;">(</span><span style="color: #8ec07c;">(</span><span style="color: #b8bb26;">"memoir-org"</span>
-         <span style="color: #fe8019;">:base-directory</span> <span style="color: #b8bb26;">"~/memoire"</span>
+         <span style="color: #fe8019;">:base-directory</span> <span style="color: #b8bb26;">"~/memoire/src"</span>
          <span style="color: #fe8019;">:base-extension</span> <span style="color: #b8bb26;">"org"</span>
          <span style="color: #fe8019;">:publishing-directory</span> <span style="color: #b8bb26;">"~/memoire/docs"</span>
          <span style="color: #fe8019;">:recursive</span> t
@@ -466,7 +466,7 @@ fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
          <span style="color: #fe8019;">:auto-preamble</span> t<span style="color: #8ec07c;">)</span>
 
         <span style="color: #8ec07c;">(</span><span style="color: #b8bb26;">"memoir-static"</span>
-         <span style="color: #fe8019;">:base-directory</span> <span style="color: #b8bb26;">"~/memoire/"</span>
+         <span style="color: #fe8019;">:base-directory</span> <span style="color: #b8bb26;">"~/memoire/static"</span>
          <span style="color: #fe8019;">:base-extension</span> <span style="color: #b8bb26;">"css</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">js</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">png</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">jpg</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">gif</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">pdf</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">mp3</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">ogg</span><span style="color: #8ec07c; font-weight: bold;">\\</span><span style="color: #8ec07c; font-weight: bold;">|</span><span style="color: #b8bb26;">swf"</span>
          <span style="color: #fe8019;">:publishing-directory</span> <span style="color: #b8bb26;">"~/memoire/docs"</span>
          <span style="color: #fe8019;">:recursive</span> t
@@ -480,7 +480,7 @@ fit = curve_fit(model, jacobian_model, xdata, ydata, p0)
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: frederic boileau</p>
-<p class="date">Created: 2020-09-24 Thu 22:05</p>
+<p class="date">Created: 2020-09-24 Thu 22:16</p>
 </div>
 </body>
 </html>
